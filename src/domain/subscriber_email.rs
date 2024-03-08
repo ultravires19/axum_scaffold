@@ -1,4 +1,4 @@
-use validator::{Validate, ValidationErrors};
+use validator::Validate;
 
 #[derive(Debug, Validate)]
 pub struct SubscriberEmail {
@@ -7,10 +7,12 @@ pub struct SubscriberEmail {
 }
 
 impl SubscriberEmail {
-    pub fn parse(s: String) -> Result<Self, ValidationErrors> {
+    pub fn parse(s: String) -> Result<Self, String> {
         let subscriber_email = Self { email: s };
-        subscriber_email.validate()?;
-        Ok(subscriber_email)
+        match subscriber_email.validate() {
+            Ok(_) => Ok(subscriber_email),
+            Err(_) => Err(format!("not a valid email address")),
+        }
     }
 }
 

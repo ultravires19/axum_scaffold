@@ -1,7 +1,7 @@
 use sqlx::PgPool;
 // use std::error::Error;
 use tokio::net::TcpListener;
-use tracing::{event, span, Level};
+use tracing::{event, Level};
 use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt};
 use zero2axum::configuration::get_configuration;
 use zero2axum::startup::run;
