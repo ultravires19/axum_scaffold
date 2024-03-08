@@ -8,7 +8,7 @@ pub struct HealthCheckResponse {
 }
 
 pub async fn health_check() -> (StatusCode, Json<HealthCheckResponse>) {
-    event!(Level::INFO, "yeahhh babyy");
+    event!(Level::INFO, "health check ran");
     let response = HealthCheckResponse {
         status: "ok".to_string(),
     };
