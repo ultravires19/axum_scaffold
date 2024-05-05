@@ -5,14 +5,18 @@ use axum::{
 use sqlx::PgPool;
 use tokio::net::TcpListener;
 
-use crate::routes::{health_check, subscribe};
+use crate::{
+    email_client::EmailClient,
+    routes::{health_check, subscribe},
+};
 
-pub async fn run(listener: TcpListener, db_pool: PgPool) {
+pub async fn run(listener: TcpListener, db_pool: PgPool, email_client: EmailClient) {
     let app = Router::new()
         .route("/", get(|| async { "hello, World!" }))
         .route("/health_check", get(health_check))
         .route("/subscriptions", post(subscribe))
-        .with_state(db_pool);
+        .with_state(db_pool)
+        .with_state(email_client);
 
     // let server = Server::from_tcp(listener)?.serve(app.into_make_service());
     let server = axum::serve(listener, app).await;

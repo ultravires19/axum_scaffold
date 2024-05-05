@@ -4,7 +4,9 @@ use tokio::net::TcpListener;
 use tracing::{event, Level};
 use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt};
 use zero2axum::configuration::get_configuration;
+use zero2axum::email_client::EmailClient;
 use zero2axum::startup::run;
+
 // use zero2axum::telemetry::{get_subscriber, init_subscriber};
 
 #[tokio::main]
@@ -15,8 +17,13 @@ async fn main() {
     let connection_pool = PgPool::connect(&configuration.database.connection_string())
         .await
         .expect("Failed to connect to Postgres.");
+    let sender_email = configuration
+        .email_client
+        .sender()
+        .expect("Invalid sender email address.");
+    let email_client = EmailClient::new(configuration.email_client.base_url, sender_email);
 
-    let address = format!("127.0.0.1:{}", configuration.application_port);
+    let address = format!("127.0.0.1:{}", configuration.application.port);
     let listener = TcpListener::bind(address).await.unwrap();
-    run(listener, connection_pool).await;
+    run(listener, connection_pool, email_client).await;
 }

@@ -1,10 +1,31 @@
 use config::ConfigError;
 use serde::Deserialize;
 
+use crate::domain::SubscriberEmail;
+
 #[derive(Deserialize)]
 pub struct Settings {
     pub database: DatabaseSettings,
-    pub application_port: u16,
+    pub application: ApplicationSettings,
+    pub email_client: EmailClientSettings,
+}
+
+#[derive(Deserialize)]
+pub struct EmailClientSettings {
+    pub base_url: String,
+    pub sender_email: String,
+}
+
+impl EmailClientSettings {
+    pub fn sender(&self) -> Result<SubscriberEmail, String> {
+        SubscriberEmail::parse(self.sender_email.clone())
+    }
+}
+
+#[derive(Deserialize)]
+pub struct ApplicationSettings {
+    pub port: u16,
+    pub host: String,
 }
 
 #[derive(Deserialize)]
@@ -34,6 +55,7 @@ impl DatabaseSettings {
 
 pub fn get_configuration() -> Result<Settings, ConfigError> {
     let settings = config::Config::builder()
+        // BM: `builder` deprecated?
         .add_source(config::File::new(
             "configuration.yaml",
             config::FileFormat::Yaml,
