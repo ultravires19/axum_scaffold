@@ -10,3 +10,4 @@ database:
 email_client: 
   base_url: "https://api.postmarkapp.com"
   sender_email: "brian@kitazon.com"
+  authorization_token: "my-secret-token"

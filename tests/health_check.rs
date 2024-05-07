@@ -36,7 +36,11 @@ async fn spawn_app() -> TestApp {
         .sender()
         .expect("invalid sender email address");
 
-    let email_client = EmailClient::new(configuration.email_client.base_url, sender_email);
+    let email_client = EmailClient::new(
+        configuration.email_client.base_url,
+        sender_email,
+        configuration.email_client.authorization_token,
+    );
 
     let server = startup::run(listener, connection_pool.clone(), email_client);
     let _ = tokio::spawn(server);

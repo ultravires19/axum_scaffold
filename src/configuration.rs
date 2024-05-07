@@ -1,4 +1,5 @@
 use config::ConfigError;
+use secrecy::Secret;
 use serde::Deserialize;
 
 use crate::domain::SubscriberEmail;
@@ -14,6 +15,7 @@ pub struct Settings {
 pub struct EmailClientSettings {
     pub base_url: String,
     pub sender_email: String,
+    pub authorization_token: Secret<String>,
 }
 
 impl EmailClientSettings {

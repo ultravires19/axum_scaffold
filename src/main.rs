@@ -21,7 +21,11 @@ async fn main() {
         .email_client
         .sender()
         .expect("Invalid sender email address.");
-    let email_client = EmailClient::new(configuration.email_client.base_url, sender_email);
+    let email_client = EmailClient::new(
+        configuration.email_client.base_url,
+        sender_email,
+        configuration.email_client.authorization_token,
+    );
 
     let address = format!("127.0.0.1:{}", configuration.application.port);
     let listener = TcpListener::bind(address).await.unwrap();
