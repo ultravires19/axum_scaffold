@@ -6,7 +6,7 @@ use zero2axum::email_client::EmailClient;
 use zero2axum::telemetry::{get_subscriber, init_subscriber};
 
 use zero2axum::configuration::{get_configuration, DatabaseSettings};
-use zero2axum::{email_client, startup};
+use zero2axum::startup;
 
 static INIT: Once = Once::new();
 
