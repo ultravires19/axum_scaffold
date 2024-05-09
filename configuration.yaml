@@ -8,6 +8,7 @@ database:
   password: "password"
   database_name: "zero2axum"
 email_client: 
+  timeout_milliseconds: 10000
   base_url: "https://api.postmarkapp.com"
   sender_email: "brian@kitazon.com"
   authorization_token: "my-secret-token"
